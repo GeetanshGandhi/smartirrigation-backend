@@ -31,4 +31,9 @@ public class DeviceController {
     public List<Device> getAll(){
         return deviceService.getAll();
     }
+
+    @GetMapping("/deleteall")
+    public void deleteall(){
+        deviceService.deleteall();
+    }
 }

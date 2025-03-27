@@ -58,7 +58,9 @@ public class DeviceService {
         output.setWaterUpper(newdata.getWaterUpper());
         return output;
     }
-
+    public void deleteall(){
+        deviceRepository.deleteAll();
+    }
     public List<Device> getAll(){
         return deviceRepository.findAll();
     }
