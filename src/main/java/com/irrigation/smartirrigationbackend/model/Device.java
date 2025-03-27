@@ -14,6 +14,7 @@ public class Device {
     @JoinColumn(name="dataId")
     private Data data;
 
+    public Device(){}
     public Device(String deviceId, Data data) {
         this.deviceId = deviceId;
         this.data = data;

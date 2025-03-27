@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DeviceService {
@@ -15,7 +16,7 @@ public class DeviceService {
     private DataRepository dataRepository;
 
     public String addDevice(AddDeviceInput input){
-        String temp = new TemperatureMapper().map(input.getTemperature());
+        String temp = "20-30";
         DataInputPayload dataInputPayload= new DataInputPayload(input.getCropType(), input.getRegion(), temp);
         Data data = dataRepository.findByCropTypeAndRegionAndTemperature(input.getCropType(), input.getRegion(), temp);
         Device device = new Device(input.getDeviceId(), data);
@@ -41,7 +42,11 @@ public class DeviceService {
     public OutputDataToESP getDeviceData(String input){
         String[] fields = input.split(" ");
         String mappedTemp = new TemperatureMapper().map(Integer.parseInt(fields[1]));
-        Device device = deviceRepository.findById(fields[0]).get();
+        Optional<Device> getdevice = deviceRepository.findById(fields[0]);
+        if(getdevice.isEmpty()){
+            return new OutputDataToESP(null, 0.0, 0.0);
+        }
+        Device device = getdevice.get();
         OutputDataToESP output = new OutputDataToESP(fields[1], 0.0, 0.0);
         if(device.getData().getTemperature().equals(mappedTemp)){
             output.setWaterLower(device.getData().getWaterLower());
