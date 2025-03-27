@@ -17,10 +17,12 @@ public class DeviceService {
 
     public String addDevice(AddDeviceInput input){
         String temp = "20-30";
-        DataInputPayload dataInputPayload= new DataInputPayload(input.getCropType(), input.getRegion(), temp);
         Data data = dataRepository.findByCropTypeAndRegionAndTemperature(input.getCropType(), input.getRegion(), temp);
+        System.out.println("fetched data: ");
+        System.out.println(data.toString());
         Device device = new Device(input.getDeviceId(), data);
-        deviceRepository.save(device);
+        Device added = deviceRepository.save(device);
+        System.out.println(added.toString());
         return "Success";
     }
     public String updateDeviceCrop(String deviceId, String cropType){
@@ -41,13 +43,17 @@ public class DeviceService {
     }
     public OutputDataToESP getDeviceData(String input){
         String[] fields = input.split(" ");
+        System.out.println(fields[0]+" and "+fields[1]);
         String mappedTemp = new TemperatureMapper().map(Integer.parseInt(fields[1]));
+        System.out.println(mappedTemp);
         Optional<Device> getdevice = deviceRepository.findById(fields[0]);
         if(getdevice.isEmpty()){
             return new OutputDataToESP(null, 0.0, 0.0);
         }
         Device device = getdevice.get();
-        OutputDataToESP output = new OutputDataToESP(fields[1], 0.0, 0.0);
+        System.out.println("device id: "+device.getDeviceId());
+        OutputDataToESP output = new OutputDataToESP(fields[0], 0.0, 0.0);
+
         if(device.getData().getTemperature().equals(mappedTemp)){
             output.setWaterLower(device.getData().getWaterLower());
             output.setWaterUpper(device.getData().getWaterUpper());

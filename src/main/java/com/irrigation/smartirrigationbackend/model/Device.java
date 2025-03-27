@@ -35,4 +35,12 @@ public class Device {
     public void setData(Data data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "deviceId='" + deviceId + '\'' +
+                ", data=" + data.toString() +
+                '}';
+    }
 }

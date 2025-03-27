@@ -63,4 +63,16 @@ public class Data {
     public void setWaterUpper(double waterUpper) {
         this.waterUpper = waterUpper;
     }
+
+    @Override
+    public String toString() {
+        return "Data{" +
+                "dataId=" + dataId +
+                ", cropType='" + cropType + '\'' +
+                ", region='" + region + '\'' +
+                ", temperature='" + temperature + '\'' +
+                ", waterLower=" + waterLower +
+                ", waterUpper=" + waterUpper +
+                '}';
+    }
 }
